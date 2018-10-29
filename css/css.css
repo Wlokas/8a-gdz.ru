@@ -1,0 +1,48 @@
+
+@font-face {
+    src: url("/fonts/Roboto-Light.ttf");
+    font-family: "Roboto Light";
+}
+@font-face {
+    src: url("/fonts/Roboto-Medium.ttf");
+    font-family: "Roboto Medium";
+}
+section {
+    margin-left: 15px;
+    padding: 20px;
+    float: left;
+    border: 2px double #0e62c1;
+    font-family: "Roboto Light";
+}
+section h2 {
+    font-size: 35px;
+}
+section li {
+    list-style-type: none;
+}
+section ul {
+    margin-left: 0;
+    padding-left: 0;
+}
+section a {
+    text-decoration: none;
+    text-transform: uppercase;
+    font-family: "Roboto Medium";
+}
+section div {
+    padding: 10px;
+    border: 2px double #0e62c1;
+    text-align: center;
+}
+section div:hover {
+    background-color: #6792ff;
+    color: white;
+}
+nav {
+    text-align: center;
+    font-size: 20px;
+    font-family: "Roboto Medium";
+}
+.date-leasson {
+    color: #0e62c1;
+}
