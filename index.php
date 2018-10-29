@@ -1,5 +1,6 @@
 <?php
 require_once 'config.php';
+require_once 'name_leasson.php';
 try {
     $pdo = new pdo('mysql:host='.$config['mysql_host'].';dbname='.$config['mysql_datebase'], $config['mysql_user'], $config['mysql_password']);
 } catch (PDOException $e){
@@ -8,8 +9,8 @@ try {
 }
 $template = '';
 $r_time = time() + 3600 * 24;
-$r_D = date('d', $r_time);
-$r_M = date('m', $r_time);
+$r_D = date('j', $r_time);
+$r_M = date('n', $r_time);
 $name_M = '';
 switch ($r_M)
 {
@@ -26,74 +27,39 @@ switch ($r_M)
     case 11: $name_M = 'Ноября'; break;
     case 12: $name_M = 'Декабря'; break;
 }
+if(isset($_GET['gdz']))
+{
+    $smtp = $pdo->prepare("SELECT * FROM `gdz` WHERE `id`=:id LIMIT 1");
+    $smtp->execute([':id' => $_GET['gdz']]);
+    $gdz = $smtp->fetch(PDO::FETCH_ASSOC);
+    $name_leasson = name_leasson($gdz['id_leasson']);
+    if($gdz['gdz_link'] != NULL) $gdz_link = '<a class="gdz-link" href="'.$gdz['gdz_link'].'">Открыть ГДЗ</a>';
+    if($gdz['gdz_img'] != NULL) $gdz_img = '<img src="'.$gdz['gdz_img'].'">';
+    if($gdz['gdz_text'] != NULL) $gdz_text = '<p class="gdz-text">'.$gdz['gdz_text'].'</p>';
+    $r_time = $gdz['date'];
+    $r_D = date('d', $r_time);
+    $r_M = date('m', $r_time);
+    $template = str_replace(['{%NAME_LEASSON%}', '{%GDZ_LINK%}', '{%GDZ_IMG%}', '{%GDZ_TEXT%}'], [$name_leasson, $gdz_link, $gdz_img, $gdz_text], file_get_contents('template/gdz.tpl'));
+    $complite_template = str_replace(['{%TITLE%}', '{%DATE_LEASSON%}'], ['8A - ГДЗ', $r_D . ' ' . $name_M], file_get_contents('template/header.tpl')) .
+        $template .
+        file_get_contents('template/footer.tpl');
+    exit($complite_template);
+
+}
 $smtp = $pdo->prepare("SELECT * FROM `gdz` WHERE `date_M`=:date_m AND `date_D`=:date_d LIMIT 6");
 $smtp->execute([':date_m' => $r_M, ':date_d' => $r_D]);
 if($smtp->rowCount() != 0) {
     while ($row = $smtp->fetch(PDO::FETCH_ASSOC)) {
         $name_leasson = '';
-        switch ($row['id_leasson']) {
-            case 0:
-                $name_leasson = 'Русский язык';
-                break;
-            case 1:
-                $name_leasson = 'Литература';
-                break;
-            case 2:
-                $name_leasson = 'Алгебра';
-                break;
-            case 3:
-                $name_leasson = 'Геометрия';
-                break;
-            case 4:
-                $name_leasson = 'Информатика';
-                break;
-            case 5:
-                $name_leasson = 'Обществознание';
-                break;
-            case 6:
-                $name_leasson = 'История';
-                break;
-            case 7:
-                $name_leasson = 'История СПБ';
-                break;
-            case 8:
-                $name_leasson = 'География';
-                break;
-            case 9:
-                $name_leasson = 'Физика';
-                break;
-            case 10:
-                $name_leasson = 'Химия';
-                break;
-            case 11:
-                $name_leasson = 'Биология';
-                break;
-            case 12:
-                $name_leasson = 'Музыка';
-                break;
-            case 13:
-                $name_leasson = 'ИЗО';
-                break;
-            case 14:
-                $name_leasson = 'Физкультура';
-                break;
-            case 15:
-                $name_leasson = 'ОБЖ';
-                break;
-            case 16:
-                $name_leasson = 'Технология';
-                break;
-            case 17:
-                $name_leasson = 'Англ. Яз (1 группа)';
-                break;
-            case 18:
-                $name_leasson = 'Англ. Яз (2 группа)';
-                break;
-        }
+        $name_leasson = name_leasson($row['id_leasson']);
         if ($row['gdz_text'] != NULL || $row['gdz_img'] != NULL) {
             $template .= str_replace(['{%NAME_LEASSON%}', '{%TOPIC_LEASSON%}', '{%DZ_LEASSON%}', '{%PHP_SELF%}', '{%GDZ_LEASSON%}'], [$name_leasson, $row['gdz_topic'], $row['gdz_gdz'], $_SERVER['PHP_SELF'], $row['id']], file_get_contents('template/section.tpl'));
-        } else {
+        } elseif($row['gdz_text'] == NULL && $row['gdz_img'] == NULL && $row['gdz_link'] != NULL) {
             $template .= str_replace(['{%NAME_LEASSON%}', '{%TOPIC_LEASSON%}', '{%DZ_LEASSON%}', '{%GDZ_LINK%}'], [$name_leasson, $row['gdz_topic'], $row['gdz_gdz'], $row['gdz_link']], file_get_contents('template/section_gdz.tpl'));
+        }
+        elseif ($row['gdz_text'] == NULL && $row['gdz_img'] == NULL && $row['gdz_link'] == NULL)
+        {
+            $template .= str_replace(['{%NAME_LEASSON%}', '{%TOPIC_LEASSON%}', '{%DZ_LEASSON%}'], [$name_leasson, $row['gdz_topic'], $row['gdz_gdz']], file_get_contents('template/section_gdz_not.tpl'));
         }
     }
     $complite_template = str_replace(['{%TITLE%}', '{%DATE_LEASSON%}'], ['8A - ГДЗ', $r_D . ' ' . $name_M], file_get_contents('template/header.tpl')) .

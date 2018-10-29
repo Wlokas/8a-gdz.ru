@@ -9,13 +9,44 @@
 }
 section {
     margin-left: 15px;
+    margin-bottom: 15px;
     padding: 20px;
     float: left;
     border: 2px double #0e62c1;
     font-family: "Roboto Light";
 }
 section h2 {
+     font-size: 35px;
+ }
+h1 {
+    text-align: center;
     font-size: 35px;
+    font-family: "Roboto Medium";
+}
+figure {
+    text-align: center;
+}
+img {
+    width: 50%;
+    height: 50%;
+}
+.gdz-text {
+    text-align: center;
+    font-family: "Roboto Light";
+    padding-top: 30px;
+    font-size: 20px;
+}
+.gdz-link {
+    text-decoration: none;
+    text-transform: uppercase;
+    font-family: "Roboto Medium";
+    color: #0e62c1;
+    font-size: 25px;
+}
+.gdz-div {
+    text-align: center;
+    width: 100%;
+    border: 2px double #0e62c1;
 }
 section li {
     list-style-type: none;
