@@ -4,5 +4,5 @@
         <li><p>{%TOPIC_LEASSON%}</p></li>
         <li><p>{%DZ_LEASSON%}</p></li>
     </ul>
-    <a href="{%PHP_SELF%}?gdz={%GDZ_LEASSON%}"><div><span>Открыть решение</span></div></a>
+    <a href="{%GDZ_LINK%}" target="_blank"><div><span>Открыть ГДЗ</span></div></a>
 </section>

@@ -28,7 +28,12 @@ section a {
     text-decoration: none;
     text-transform: uppercase;
     font-family: "Roboto Medium";
+    color: #0e62c1;
 }
+section a:visited {
+    color: #0e62c1;
+}
+
 section div {
     padding: 10px;
     border: 2px double #0e62c1;
