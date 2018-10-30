@@ -34,11 +34,11 @@ if(!isset($_COOKIE['user']) && !isset($_GET['gdz']) && !isset($_GET['date']))
     $stmt = $pdo->prepare("SELECT * FROM `users` WHERE ip=:ip");
     $stmt->execute([':ip' => $_SERVER['REMOTE_ADDR']]);
     if($stmt->rowCount() == 0) {
-        $rand = "abcdigs1shdabcyds1smcuaswuhfalwknasug";
+        $rand = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPRQSTUVWXYZ0123456789";
         $cookie = '';
         $i = 0;
         while ($i != 32) {
-            $cookie .= $rand[mt_rand(0, 37)];
+            $cookie .= $rand[mt_rand(0, 61)];
             $i++;
         }
         setcookie('user', $cookie, time() + 3600 * 8760);
