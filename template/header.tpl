@@ -10,5 +10,5 @@
 </head>
 <body>
 <nav>
-    <p>Дата: <span class="date-leasson">{%DATE_LEASSON%}<span></p>
+    <p><a class="knopki" href="?date={%BACK%}"><- Назад</a> Дата: <span class="date-leasson">{%DATE_LEASSON%}</span> <a class="knopki" href="?date={%GO%}">Вперед -></a></p>
 </nav>

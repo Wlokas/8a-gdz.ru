@@ -9,7 +9,6 @@ try {
 $gdz_link = '';
 $gdz_text = '';
 $gdz_img = '';
-$gdz_topic = '';
 $dz = '';
 
 if(isset($_COOKIE['adminpass']) && $_COOKIE['adminpass'] == '7s382s33')
@@ -22,7 +21,7 @@ if(isset($_COOKIE['adminpass']) && $_COOKIE['adminpass'] == '7s382s33')
         $gdz_topic = $_POST['topic'];
         $dz = $_POST['dz'];
         if(isset($_POST['gdz_link']) && !empty($_POST['gdz_link'])) $gdz_link = $_POST['gdz_link'];
-        if(isset($_POST['gdz_text']) && !empty($_POST['gdz_text'])) $gdz_text = $_POST['gdz_text'];
+        if(isset($_POST['gdz_text']) && !empty($_POST['gdz_text'])) $gdz_text = nl2br($_POST['gdz_text']);;
         if(isset($_POST['gdz_img']) && isset($_FILES['gdz_img']))
         {
         $file_name = 'img/'.$_FILES['gdz_img']['name'];
@@ -36,7 +35,6 @@ if(isset($_COOKIE['adminpass']) && $_COOKIE['adminpass'] == '7s382s33')
         $timestamp = strtotime($date[2].'-'.$date[1].'-'.$date[0]);
             $smtp = $pdo->prepare("INSERT INTO `gdz` (id_leasson, gdz_text, gdz_topic, gdz_gdz, gdz_img, gdz_link, date, date_D, date_M) VALUES (:id_leasson, :gdz_text, :gdz_topic, :gdz_gdz, :gdz_img, :gdz_link, :gdz_date, :date_D, :date_M)");
             $smtp->execute([':id_leasson' => $id_leasson, ':gdz_text' => $gdz_text, ':gdz_topic' => $gdz_topic, ':gdz_gdz' => $dz, ':gdz_img' => $gdz_img, ':gdz_link' => $gdz_link, ':gdz_date' => $timestamp, ':date_D' => $day, ':date_M' => $mouth]);
-            echo "INSERT INTO `gdz` (id_leasson, gdz_text, gdz_topic, gdz_gdz, gdz_img, gdz_link, date, date_D, date_M) VALUES ($id_leasson, $gdz_text, $gdz_topic, $dz, $gdz_img, $gdz_link, $timestamp, $day, $mouth)";
         echo 'Готово!';
     }
 exit(str_replace('{%DATE%}',$t_date,file_get_contents('template/admin.tpl')));
