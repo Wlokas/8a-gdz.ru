@@ -15,6 +15,19 @@ if(isset($_COOKIE['adminpass']) && $_COOKIE['adminpass'] == '7s382s33')
 {
     $r_time = time() + 3600 * 24;
     $t_date = date('20y-m-d', $r_time);
+    $smtp = $pdo->prepare("SELECT * FROM `users`");
+    $smtp->execute();
+    $users_template = '';
+    $name_user = 'Неизвестный';
+    $open = 0;
+    $click = 0;
+    while ($row = $smtp->fetch(PDO::FETCH_ASSOC))
+    {
+        $open += $row['open'];
+        $click += $row['click'];
+        if($row['name'] != NULL) $name_user = $row['name'];
+        $users_template .= 'Имя: '.$name_user.' | IP: '.$row['ip'].' | Переходы: '.$row['open'].' | Клики: '.$row['click'].'<br>';
+    }
     if(isset($_POST['leasson']))
     {
         $id_leasson = $_POST['leasson'][0];
@@ -37,5 +50,5 @@ if(isset($_COOKIE['adminpass']) && $_COOKIE['adminpass'] == '7s382s33')
             $smtp->execute([':id_leasson' => $id_leasson, ':gdz_text' => $gdz_text, ':gdz_topic' => $gdz_topic, ':gdz_gdz' => $dz, ':gdz_img' => $gdz_img, ':gdz_link' => $gdz_link, ':gdz_date' => $timestamp, ':date_D' => $day, ':date_M' => $mouth]);
         echo 'Готово!';
     }
-exit(str_replace('{%DATE%}',$t_date,file_get_contents('template/admin.tpl')));
+exit(str_replace(['{%DATE%}', '{%OPEN%}', '{%CKILS%}', '{%USERS%}'],[$t_date, $open, $click, $users_template],file_get_contents('template/admin.tpl')));
 }
