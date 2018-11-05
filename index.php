@@ -14,6 +14,8 @@ $r_M = date('n', $r_time);
 $back = $r_time - 3600 * 24;
 $go = $r_time + 3600 * 24;
 $name_M = '';
+$admin = '';
+if(isset($_COOKIE['admin']) && $_COOKIE['admin'] == $config['admin_password']) $admin = '<a href="admin.php" class="admin">Админ панель</a>';
 switch ($r_M)
 {
     case 1: $name_M = 'Января'; break;
@@ -82,7 +84,7 @@ if(isset($_GET['gdz']))
     $r_D = date('d', $r_time);
     $r_M = date('m', $r_time);
     $template = str_replace(['{%NAME_LEASSON%}', '{%GDZ_LINK%}', '{%GDZ_IMG%}', '{%GDZ_TEXT%}'], [$name_leasson, $gdz_link, $gdz_img, $gdz_text], file_get_contents('template/gdz.tpl'));
-    $complite_template = str_replace(['{%TITLE%}', '{%DATE_LEASSON%}', '{%BACK%}', '{%GO%}'], ['8A - ГДЗ', $r_D . ' ' . $name_M, $back, $go], file_get_contents('template/header.tpl')) .
+    $complite_template = str_replace(['{%TITLE%}', '{%DATE_LEASSON%}', '{%BACK%}', '{%GO%}', '{%ADMIN%}'], ['8A - ГДЗ', $r_D . ' ' . $name_M, $back, $go, $admin], file_get_contents('template/header.tpl')) .
         $template .
         file_get_contents('template/footer.tpl');
     exit($complite_template);
@@ -127,12 +129,12 @@ if($smtp->rowCount() != 0) {
             $template .= str_replace(['{%NAME_LEASSON%}', '{%TOPIC_LEASSON%}', '{%DZ_LEASSON%}'], [$name_leasson, $row['gdz_topic'], $row['gdz_gdz']], file_get_contents('template/section_gdz_not.tpl'));
         }
     }
-    $complite_template = str_replace(['{%TITLE%}', '{%DATE_LEASSON%}', '{%BACK%}', '{%GO%}'], ['8A - ГДЗ', $r_D . ' ' . $name_M, $back, $go], file_get_contents('template/header.tpl')) .
+    $complite_template = str_replace(['{%TITLE%}', '{%DATE_LEASSON%}', '{%BACK%}', '{%GO%}', '{%ADMIN%}'], ['8A - ГДЗ', $r_D . ' ' . $name_M, $back, $go, $admin], file_get_contents('template/header.tpl')) .
         $template .
         file_get_contents('template/footer.tpl');
 }
 else {
-    $complite_template = str_replace(['{%TITLE%}', '{%DATE_LEASSON%}', '{%BACK%}', '{%GO%}'], ['8A - ГДЗ', $r_D . ' ' . $name_M, $back, $go], file_get_contents('template/header.tpl')) .
+    $complite_template = str_replace(['{%TITLE%}', '{%DATE_LEASSON%}', '{%BACK%}', '{%GO%}', '{%ADMIN%}'], ['8A - ГДЗ', $r_D . ' ' . $name_M, $back, $go, $admin], file_get_contents('template/header.tpl')) .
         file_get_contents('template/not_found.tpl') .
         file_get_contents('template/footer.tpl');
 }

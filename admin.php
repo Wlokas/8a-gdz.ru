@@ -6,12 +6,22 @@ try {
     echo 'Ошибка при подключении к базе данных';
     exit();
 }
+$auth = false;
 $gdz_link = '';
 $gdz_text = '';
 $gdz_img = '';
 $dz = '';
-
-if(isset($_COOKIE['adminpass']) && $_COOKIE['adminpass'] == '7s382s33')
+if(isset($_POST['pass']) && $_POST['pass'] == $config['admin_password'])
+{
+    setcookie('admin', $config['admin_password'], time() + 3600 * 8760);
+    $auth = true;
+}
+if(isset($_GET['logout']) && isset($_COOKIE['admin']))
+{
+    setcookie("admin","0",time()-1, "/");
+    header('Location: /');
+}
+if(isset($_COOKIE['admin']) && $_COOKIE['admin'] == $config['admin_password'] || $auth == true)
 {
     $r_time = time() + 3600 * 24;
     $t_date = date('20y-m-d', $r_time);
@@ -26,7 +36,7 @@ if(isset($_COOKIE['adminpass']) && $_COOKIE['adminpass'] == '7s382s33')
         $open += $row['open'];
         $click += $row['click'];
         if($row['name'] != NULL) $name_user = $row['name'];
-        $users_template .= 'Имя: '.$name_user.' | IP: '.$row['ip'].' | Переходы: '.$row['open'].' | Клики: '.$row['click'].'<br>';
+        $users_template .= '<li>Имя: '.$name_user.' | IP: '.$row['ip'].' | Переходы: '.$row['open'].' | Клики: '.$row['click'].'</li>';
     }
     if(isset($_POST['leasson']))
     {
@@ -51,4 +61,8 @@ if(isset($_COOKIE['adminpass']) && $_COOKIE['adminpass'] == '7s382s33')
         echo 'Готово!';
     }
 exit(str_replace(['{%DATE%}', '{%OPEN%}', '{%CKILS%}', '{%USERS%}'],[$t_date, $open, $click, $users_template],file_get_contents('template/admin.tpl')));
+}
+elseif(!isset($_COOKIE['admin']))
+{
+    exit(file_get_contents('template/admin_auth.tpl'));
 }

@@ -41,6 +41,9 @@
 </form>
 <h2>Статистика:</h2>
 <p>Открытие: {%OPEN%}, Клики: {%CKILS%}</p>
+<ul>
 {%USERS%}
+</ul>
+<a href="?logout">Выйти</a>
 </body>
 </html>
