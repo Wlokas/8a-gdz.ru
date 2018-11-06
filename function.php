@@ -63,3 +63,75 @@ function name_leasson($id_leasson = 0)
     }
     return $name_leasson;
 }
+
+function name_mouth($r_M) {
+    $name_M = '';
+    switch ($r_M) {
+        case 1:
+            $name_M = 'Января';
+            break;
+        case 2:
+            $name_M = 'Февраля';
+            break;
+        case 3:
+            $name_M = 'Марта';
+            break;
+        case 4:
+            $name_M = 'Апреля';
+            break;
+        case 5:
+            $name_M = 'Мая';
+            break;
+        case 6:
+            $name_M = 'Июня';
+            break;
+        case 7:
+            $name_M = 'Июля';
+            break;
+        case 8:
+            $name_M = 'Августа';
+            break;
+        case 9:
+            $name_M = 'Сентября';
+            break;
+        case 10:
+            $name_M = 'Октября';
+            break;
+        case 11:
+            $name_M = 'Ноября';
+            break;
+        case 12:
+            $name_M = 'Декабря';
+            break;
+    }
+    return $name_M;
+}
+
+function name_week($week)
+{
+    $name_week = '';
+    switch ($week) {
+        case 1:
+            $name_week = 'Пн';
+            break;
+        case 2:
+            $name_week = 'Вт';
+            break;
+        case 3:
+            $name_week = 'Ср';
+            break;
+        case 4:
+            $name_week = 'Чт';
+            break;
+        case 5:
+            $name_week = 'Пт';
+            break;
+        case 6:
+            $name_week = 'Сб';
+            break;
+        case 7:
+            $name_week = 'Вс';
+            break;
+    }
+    return $name_week;
+}
